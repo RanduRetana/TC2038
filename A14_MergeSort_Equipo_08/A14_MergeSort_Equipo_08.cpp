@@ -9,7 +9,7 @@
 // Sebastian Flores Lemus    | A01709229
 //
 // Descripcion: Este programa implementa el algoritmo de ordenaciC3n "Merge Sort"
-// utilizando la tC)cnica de programaciC3n "divide y vencerC!s". El algoritmo divide
+// utilizando la técnica de programaciC3n "divide y vencerC!s". El algoritmo divide
 // recursivamente el arreglo en dos mitades hasta que cada sub-arreglo contiene un C:nico elemento.
 // A continuación, combina (merge) estos sub-arreglos para producir nuevos sub-arreglos ordenados.
 // Estos son combinados continuamente hasta obtener un C:nico arreglo ordenado.
