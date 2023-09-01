@@ -1,5 +1,5 @@
 #======================================================================
-# Actividad: Actividad 1.1. Planteamiento e Implementación de algoritmos
+# Actividad: Actividad 1.5. Implementación de la técnica de programación "Programación dinámica" y "algoritmos avaros"
 # 
 # Fecha: 4/9/2023
 #
