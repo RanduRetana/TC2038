@@ -79,6 +79,11 @@ def cambioDeMonedasDP():
         print("Cannot give exact change with available coins.")
     else:
         change = {}
+
+        #inicializamos todas las monedas en el diccionario con valor 0
+        for coin in coinValues:
+            change[coin] = 0
+
         amount = left
         for coin in coinValues:
             while amount >= coin and dp[amount] == dp[amount - coin] + 1:

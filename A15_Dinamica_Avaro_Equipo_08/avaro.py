@@ -66,6 +66,10 @@ def cambioDeMonedas():
     #Se calcula el cambio    
     left: int = paid - price
 
+    #inicializamos todas las monedas en el diccionario con valor 0
+    for coin in coinValues:
+        changePerCoin[coin] = 0
+
     #Se calcula el cambio por moneda
     while left != 0 and coinValues:
         if left - coinValues[0] >= 0:
