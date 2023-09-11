@@ -1,53 +1,47 @@
-#======================================================================
-# Actividad: Solución de laberinto utilizando técnicas de backtracking y ramificación y poda
+# ======================================================================
+# Actividad:  Actividad 1.6 Implementación de la técnica de programación "backtracking" y "ramificación y poda"
 # 
 # Fecha: 10/9/2023
-#
+# 
 # Autores:
 # Frida Bailleres González  | A01708633
 # Marco Randu Retana Vargas | A01709521
 # Sebastian Flores Lemus    | A01709229
 #
-# Descripción:
-# El programa busca una solución para un laberinto utilizando técnicas
-# de ramificación y poda. Se inicia en la casilla (0,0)
-# y se busca alcanzar la casilla final (M-1, N-1). Se usa 1 para
-# representar casillas transitables y 0 para las que no lo son.
-#
-#======================================================================
-
+# Descripción: Este programa busca resolver un laberinto representado por una 
+# matriz de MxN utilizando el método de Ramificación y Poda. El laberinto es 
+# ingresado por el usuario fila por fila, donde 1 representa un camino transitable 
+# y 0 un obstáculo. El programa busca el camino más corto desde el inicio (0,0) 
+# hasta el final (M-1, N-1), moviéndose solo hacia la derecha o hacia abajo. 
+# Utiliza una cola de prioridad para determinar el siguiente nodo a expandir 
+# basándose en el costo del camino actual.
+# Complejidad: O(MN log(MN)), siendo MN el número total de nodos posibles
+# en el laberinto.
+# ======================================================================
 
 import heapq
 
-
-# @param None
-# @return None
-#
-# Descripción:
-# Esta función resuelve un laberinto utilizando la técnica de ramificación
-# y poda. Comienza en la casilla de inicio (0,0) y busca encontrar un
-# camino hasta la casilla de salida (M-1, N-1). El laberinto se ingresa
-# a través de la entrada estándar, y se muestra la solución o un mensaje
-# de "No hay solución" en la salida estándar.
-#
-# Complejidad: O(M * N), donde M es el número de filas y N es el número de columnas del laberinto.
-# ======================================================================
 def resolver_laberinto():
-
     # ======================================================================
-    # ======================================================================
-    # Verifica si una casilla en las coordenadas (x, y) es válida para moverse.
+    # Función auxiliar para verificar si una celda es válida.
     #
-    # @param maze, laberinto representado como una matriz de 0's y 1's
-    # @param x, coordenada x de la casilla
-    # @param y, coordenada y de la casilla
-    # @return True si la casilla es válida, False en caso contrario
-    #
-    # Complejidad: O(1)
+    # @param x: La coordenada x de la celda.
+    # @param y: La coordenada y de la celda.
+    # @return: Verdadero si la celda es válida, falso de lo contrario.
+    # Complejidad: O(1), verificación constante de las condiciones.
     # ======================================================================
     def es_valida(x, y):
         return 0 <= x < M and 0 <= y < N and maze[x][y] == 1
 
+    # ======================================================================
+    # Función auxiliar para expandir un nodo y añadir los nodos resultantes
+    # a la cola de prioridad.
+    #
+    # @param x: La coordenada x del nodo actual.
+    # @param y: La coordenada y del nodo actual.
+    # @param camino_actual: Lista de tuplas que representa el camino actual.
+    # Complejidad: O(1), ya que solo considera dos movimientos posibles.
+    # ======================================================================
     def expandir(x, y, camino_actual):
         movimientos = [(0, 1), (1, 0)]  # Derecha y abajo
 
@@ -59,6 +53,11 @@ def resolver_laberinto():
                 nuevo_costo = len(nuevo_camino)  # Costo es la longitud del camino
                 heapq.heappush(cola_prioridad, (nuevo_costo, nx, ny, nuevo_camino))
 
+    # ======================================================================
+    # Principal cuerpo de la función resolver_laberinto.
+    # El usuario ingresa el tamaño y los detalles del laberinto.
+    # ======================================================================
+
     M = int(input("Ingrese el número de filas (M): "))
     N = int(input("Ingrese el número de columnas (N): "))
 
@@ -67,9 +66,17 @@ def resolver_laberinto():
     for _ in range(M):
         maze.append(list(map(int, input().strip().split())))
 
+    # Inicialización de la cola de prioridad y el primer nodo
     cola_prioridad = []
     heapq.heappush(cola_prioridad, (1, 0, 0, [(0, 0)]))  # Coste, coordenadas x, coordenadas y, camino
 
+    # ======================================================================
+    # Loop principal que explora los caminos en el laberinto utilizando
+    # Ramificación y Poda hasta encontrar la solución o determinar que
+    # no hay solución.
+    # Complejidad: O(MN log(MN)), siendo MN el número total de nodos posibles
+    # en el laberinto.
+    # ======================================================================
     while cola_prioridad:
         _, x, y, camino_actual = heapq.heappop(cola_prioridad)
 
@@ -88,4 +95,5 @@ def resolver_laberinto():
 
     print("No hay solución")
 
+# Llamada a la función principal para iniciar el programa
 resolver_laberinto()
