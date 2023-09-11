@@ -34,17 +34,6 @@ import heapq
 # ======================================================================
 def resolver_laberinto():
 
-    # ======================================================================
-    # ======================================================================
-    # Verifica si una casilla en las coordenadas (x, y) es válida para moverse.
-    #
-    # @param maze, laberinto representado como una matriz de 0's y 1's
-    # @param x, coordenada x de la casilla
-    # @param y, coordenada y de la casilla
-    # @return True si la casilla es válida, False en caso contrario
-    #
-    # Complejidad: O(1)
-    # ======================================================================
     def es_valida(x, y):
         return 0 <= x < M and 0 <= y < N and maze[x][y] == 1
 
