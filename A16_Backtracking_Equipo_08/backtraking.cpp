@@ -8,10 +8,11 @@
 // Marco Randu Retana Vargas | A01709521
 // Sebastian Flores Lemus    | A01709229
 //
-// # El programa busca una solución para un laberinto utilizando técnicas
+// El programa busca una solución para un laberinto utilizando técnicas
 // de backtracking. Se inicia en la casilla (0,0)
 // y se busca alcanzar la casilla final (M-1, N-1). Se usa 1 para
 // representar casillas transitables y 0 para las que no lo son.
+// Complejidad: O(2^(M*N))
 // ======================================================================
 
 #include <iostream>
@@ -20,8 +21,8 @@
 using namespace std;
 
 int M, N;
-vector<vector<int>> maze;
-vector<vector<bool>> solution;
+vector<vector<int> > maze;
+vector<vector<bool> > solution;
 
 // ======================================================================
 // Función que verifica si es seguro moverse a una casilla
@@ -29,7 +30,7 @@ vector<vector<bool>> solution;
 // @param x: La coordenada x de la casilla.
 // @param y: La coordenada y de la casilla.
 // @return True si es seguro moverse a la casilla, False en caso contrario.
-// Complejidad: O(), 
+// Complejidad: O(1)  ya que solo realiza operaciones básicas que toman un tiempo constante.
 // =====================================================================
  
 bool isSafe(int x, int y) {
@@ -42,7 +43,7 @@ bool isSafe(int x, int y) {
 // @param x: La coordenada x actual.
 // @param y: La coordenada y actual.
 // @return True si se encontró una solución, False en caso contrario.
-// Complejidad: O(), 
+// Complejidad: O(2^(M*N)), en el peor de los casos, ya que en el peor escenario exploraría todas las posibles rutas en el laberinto.
 // =====================================================================
 
 bool Backtracking(int x, int y) {
