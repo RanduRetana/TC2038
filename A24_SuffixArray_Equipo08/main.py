@@ -20,6 +20,7 @@
 # Permite obtener el arreglo de sufijos de un string
 # @param string, string del cual se obtendrá el arreglo de sufijos
 # retorno {sortedSuffixes}, arreglo de sufijos ordenado alfabéticamente
+# complejidad: O(n^2 * log n)
 #
 def suffix_array(string):
     sortedSuffixes = sorted([string[i:] for i in range(len(string))])
