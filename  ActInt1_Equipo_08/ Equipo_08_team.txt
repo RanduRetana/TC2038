@@ -1,0 +1,31 @@
+
+Instrucciones:
+
+Incluye un archivo Equipo_XX_team.txt que incluya los nombres de todos los integrantes del equipo, con sus matrículas 
+y las partes específicas del proyecto en las que trabajó cada uno de los integrantes.
+
+-------------------------------------------------
+| Frida Bailleres González  | A01708633 :
+|
+|
+|
+|
+-------------------------------------------------
+
+
+-------------------------------------------------
+| Marco Randu Retana Vargas | A01709521 :
+|
+|
+|
+|
+-------------------------------------------------
+
+
+-------------------------------------------------
+| Sebastian Flores Lemus    | A01709229 :
+|
+|
+|
+| 
+-------------------------------------------------
