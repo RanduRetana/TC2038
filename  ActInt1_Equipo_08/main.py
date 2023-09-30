@@ -2,25 +2,34 @@ def suffix_array(string):
     sortedSuffixes = sorted([string[i:] for i in range(len(string))])
     return sortedSuffixes
 
+def mcodeSearch(mcode, transmission):
+    start = 0
+    while True:
+        start = transmission.find(mcode, start)
+        if start == -1: return
+        end = start + len(mcode) - 1
+        print("True ", start, end)
+        start += 1
 
 def __main__():
-    transmission1 = open("transmission1.txt", "r")
-    transmission2 = open("transmission2.txt", "r")
-    mcode1 = open("mcode1.txt", "r")
-    mcode2 = open("mcode2.txt", "r")
-    mcode3 = open("mcode3.txt", "r")
+    transmissions = []
+    mcodes = []
+    for i in range(1, 3):
+        with open(f"transmission{i}.txt", "r") as f:
+            transmissions.append(f.read())
+    for i in range(1, 4):
+        with open(f"mcode{i}.txt", "r") as f:
+            mcodes.append(f.read())
 
-    subtransmission1 = suffix_array(transmission1.read())
-    subtransmission2 = suffix_array(transmission2.read())
-
-    for mcode1 in subtransmission1:
-        if mcode1 in subtransmission1:
-            print(mcode1)
-            print("/n")
-            print(subtransmission1)
-            print("true")
-
+    for i, mcode in enumerate(mcodes):
+        for j, transmission in enumerate(transmissions):
+            print(f"mcode{i+1} in transmission{j+1}")
+            if mcode in transmission:
+                mcodeSearch(mcode, transmission)
+            else:
+                print("False")
 
 __main__()
+
 
 
