@@ -11,6 +11,16 @@ def mcodeSearch(mcode, transmission):
         print("True ", start, end)
         start += 1
 
+def mirroredSubStringSearch(transmission):
+    longestMirrored = ""
+    for i in range(len(transmission)):
+        for j in range(i + 1, len(transmission) + 1):
+            substring = transmission[i:j]
+            if substring[::-1] in transmission and len(substring) > len(longestMirrored):
+                longestMirrored = substring
+    print(longestMirrored, transmission.find(longestMirrored), transmission.find(longestMirrored) + len(longestMirrored) - 1)
+            
+
 def __main__():
     transmissions = []
     mcodes = []
@@ -28,6 +38,11 @@ def __main__():
                 mcodeSearch(mcode, transmission)
             else:
                 print("False")
+
+    print("Longest mirrored substring in transmission 1")
+    mirroredSubStringSearch(transmissions[0])
+    print("Longest mirrored substring in transmission 2")
+    mirroredSubStringSearch(transmissions[1])
 
 __main__()
 
