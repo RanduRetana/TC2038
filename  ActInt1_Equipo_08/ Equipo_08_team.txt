@@ -6,9 +6,11 @@ y las partes específicas del proyecto en las que trabajó cada uno de los integ
 
 -------------------------------------------------
 | Frida Bailleres González  | A01708633 :
+|   Parte 3: 
 |
-|
-|
+|   En esta parte se analiza que tan similares son los archivos de transmisión, y debe mostrar la posición inicial
+|   y la posición final  del primer archivo en donde se encuentra el substring más largo común entre ambos archivos 
+|   de transmisión.
 |
 -------------------------------------------------
 
