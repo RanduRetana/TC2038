@@ -22,17 +22,20 @@ y las partes específicas del proyecto en las que trabajó cada uno de los integ
 
 -------------------------------------------------
 | Marco Randu Retana Vargas | A01709521 :
-|
-|
-|
-|
+|   Parte 2:
+|   En esta parte se busca el substring mirrored más largo en el archivo de transmisión.
+|   El nombre de la función que implementé es:
+|   mirroredSubStringSearch(transmission)
+|   Esto fué utilizando un algoritmo de fuerza bruta.
 -------------------------------------------------
 
 
 -------------------------------------------------
 | Sebastian Flores Lemus    | A01709229 :
-| 
-| 
-|
+|   Parte 1:
+|   En esta parte se busca que haya mcodes en el archivo de transmisión.
+|   El nombre de la función que implementé es:
+|   search_mcodes_in_transmissions():
+|   Esto fué utilizando el algoritmo de Knuth-Morris-Pratt.
 | 
 -------------------------------------------------
