@@ -1,15 +1,28 @@
 # ========================== FUNCIONES AUXILIARES ==========================
-def suffix_array(string):
-    return sorted([string[i:] for i in range(len(string))])
+def build_kmp_table(pattern):
+    table = [0] * len(pattern)
+    j = 0
+    for i in range(1, len(pattern)):
+        while j > 0 and pattern[i] != pattern[j]:
+            j = table[j - 1]
+        if pattern[i] == pattern[j]:
+            j += 1
+        table[i] = j
+    return table
 
-def mcodeSearch(mcode, transmission):
-    start = 0
-    while True:
-        start = transmission.find(mcode, start)
-        if start == -1: return
-        end = start + len(mcode) - 1
-        print("True ", start, end)
-        start += 1
+def kmp_search(pattern, text):
+    indices = []
+    table = build_kmp_table(pattern)
+    j = 0
+    for i in range(len(text)):
+        while j > 0 and text[i] != pattern[j]:
+            j = table[j - 1]
+        if text[i] == pattern[j]:
+            j += 1
+        if j == len(pattern):
+            indices.append(i - j + 1)
+            j = table[j - 1]
+    return indices
 
 # ========================== PARTE 1: Búsqueda de Códigos Maliciosos ==========================
 def search_mcodes_in_transmissions():
@@ -19,11 +32,13 @@ def search_mcodes_in_transmissions():
     for i, mcode in enumerate(mcodes):
         for j, transmission in enumerate(transmissions):
             print(f"mcode{i+1} in transmission{j+1}")
-            if mcode in transmission:
-                mcodeSearch(mcode, transmission)
+            indices = kmp_search(mcode, transmission)
+            if indices:
+                for index in indices:
+                    print("True", index + 1, index + len(mcode))
             else:
                 print("False")
-    return transmissions 
+    return transmissions
 
 # ========================== PARTE 2: Palíndromos más largos ==========================
 def mirroredSubStringSearch(transmission):
