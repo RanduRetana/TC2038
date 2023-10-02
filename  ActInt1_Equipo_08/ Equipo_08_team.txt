@@ -12,6 +12,11 @@ y las partes específicas del proyecto en las que trabajó cada uno de los integ
 |   y la posición final  del primer archivo en donde se encuentra el substring más largo común entre ambos archivos 
 |   de transmisión.
 |
+|    El nombre de la función que implementé es:
+|   "def longest_common_substring(transmission1, transmission2:)"
+|
+|   Esto fué utilizando el algoritmo: Longest Common Substring "LCSubstring"
+|
 -------------------------------------------------
 
 
@@ -26,8 +31,8 @@ y las partes específicas del proyecto en las que trabajó cada uno de los integ
 
 -------------------------------------------------
 | Sebastian Flores Lemus    | A01709229 :
-|
-|
+| 
+| 
 |
 | 
 -------------------------------------------------
