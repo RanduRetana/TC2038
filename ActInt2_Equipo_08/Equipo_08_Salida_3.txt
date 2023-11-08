@@ -1,0 +1,4 @@
+1. Forma óptima de cablear las colonias con fibra:
+[('A', 'B'), ('B', 'C'), ('C', 'D'), ('D', 'E'), ('E', 'F'), ('F', 'G'), ('G', 'H'), ('H', 'I'), ('I', 'J')]
+
+4. La central más cercana a la nueva contratación está en F con una distancia de 6.00 unidades.

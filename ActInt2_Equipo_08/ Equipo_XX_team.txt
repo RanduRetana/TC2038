@@ -1,0 +1,33 @@
+
+Instrucciones:
+
+Incluye un archivo Equipo_XX_team.txt que incluya los nombres de todos los integrantes del equipo, con sus matrículas y 
+las partes específicas del proyecto en las que trabajó cada uno de los integrantes.
+
+-------------------------------------------------
+| Frida Bailleres González  | A01708633 :
+| Parte 1: En la parte uno se realiza la lectura de los archivos de entrada los 
+| cuales contienen la información del grafo que se representa con una matriz de
+| adyacencias. El nombre de la función es "leer_datos_de_archivo".
+|
+| Igual se implement una función para calcular el MST (árbol de mínima extensión)
+| para saber cuál es la forma óptima de cablear con fibra óptica.
+| usando el algoritmo de Prim. El nombre de la función es "prim".
+| 
+|
+| Parte 4: En esta parte de implementa una función llamada "encontrar_central_mas_cercana"
+| usando el algoritmo de Dijkstra para el camino pas cercano. Esto nos ayuda a conocer cuál 
+| es la central más cercana geográficamente a una nueva contratación de servico.
+-------------------------------------------------
+
+
+-------------------------------------------------
+| Marco Randu Retana Vargas | A01709521 :
+|
+-------------------------------------------------
+
+
+-------------------------------------------------
+| Sebastian Flores Lemus    | A01709229 :
+|
+-------------------------------------------------
