@@ -109,6 +109,10 @@ def encontrar_central_mas_cercana(matriz_distancias, nueva_central_idx):
     central_cercana = min((index for index in range(N) if index != nueva_central_idx), key=lambda x: distancias[x])
     return central_cercana, distancias[central_cercana]
 
+
+
+
+
 # ========================== FUNCIÓN PRINCIPAL ==========================
 
 # ======================================================================
@@ -146,6 +150,9 @@ def main():
         
         # Escribir los resultados en el archivo de salida
         with open(nombre_archivo_salida, 'w') as archivo_salida:
+
+
+            # 1.
             archivo_salida.write("1. Forma óptima de cablear las colonias con fibra:\n")
             archivo_salida.write(str(cableado) + "\n\n")
             
@@ -157,8 +164,8 @@ def main():
             # archivo_salida.write("3. Valor de flujo máximo de información:\n")
             # archivo_salida.write(str(valor_flujo_maximo) + "\n\n")
             
+            # 4. 
             archivo_salida.write(f"4. La central más cercana a la nueva contratación está en {chr(65 + central_cercana)} con una distancia de {distancia:.2f} unidades.\n")
 
-# Ejecutar el programa principal
 if __name__ == "__main__":
     main()
