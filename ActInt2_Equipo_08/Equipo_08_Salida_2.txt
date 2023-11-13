@@ -1,4 +1,45 @@
-1. Forma óptima de cablear las colonias con fibra:
-[('A', 'B'), ('B', 'C'), ('C', 'D'), ('D', 'E')]
+1. Todas las conexiones posibles entre colonias con sus respectivas distancias:
+Colonia 1 a colonia 2: 2
+Colonia 1 a colonia 3: 3
+Colonia 1 a colonia 4: 8
+Colonia 1 a colonia 5: 9
+Colonia 1 a colonia 6: 5
 
-4. La central más cercana a la nueva contratación está en A con una distancia de 10.00 unidades.
+Colonia 2 a colonia 1: 2
+Colonia 2 a colonia 3: 3
+Colonia 2 a colonia 4: 7
+Colonia 2 a colonia 5: 1
+Colonia 2 a colonia 6: 4
+
+Colonia 3 a colonia 1: 1
+Colonia 3 a colonia 2: 2
+Colonia 3 a colonia 4: 4
+Colonia 3 a colonia 5: 6
+Colonia 3 a colonia 6: 5
+
+Colonia 4 a colonia 1: 2
+Colonia 4 a colonia 2: 2
+Colonia 4 a colonia 3: 3
+Colonia 4 a colonia 5: 2
+Colonia 4 a colonia 6: 1
+
+Colonia 5 a colonia 1: 1
+Colonia 5 a colonia 2: 2
+Colonia 5 a colonia 3: 3
+Colonia 5 a colonia 4: 4
+Colonia 5 a colonia 6: 6
+
+Colonia 6 a colonia 1: 5
+Colonia 6 a colonia 2: 3
+Colonia 6 a colonia 3: 1
+Colonia 6 a colonia 4: 3
+Colonia 6 a colonia 5: 1
+
+1. Forma óptima de cablear las colonias con fibra:
+Colonia 1 a colonia 2: 2
+Colonia 2 a colonia 5: 1
+Colonia 1 a colonia 3: 3
+Colonia 2 a colonia 6: 4
+Colonia 6 a colonia 4: 3
+
+4. La central más cercana a (700, 400) es (100, 400) con una distancia de 600.000 unidades.

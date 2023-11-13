@@ -25,10 +25,10 @@ def leer_datos_de_archivo(nombre_archivo):
         matriz_flujos = [list(map(int, archivo.readline().split())) for _ in range(N)]
 
         # Leer las coordenadas de las centrales
-        centrales = [tuple(map(int, archivo.readline().split())) for _ in range(N)]
+        centrales = [tuple(map(int, archivo.readline().strip("()\n").split(","))) for _ in range(N)]
 
         # Leer las coordenadas de la nueva central
-        nueva_central = tuple(map(int, archivo.readline().split()))
+        nueva_central = tuple(map(int, archivo.readline().strip("()\n").split(",")))
 
         return N, matriz_distancias, matriz_flujos, centrales, nueva_central
 
@@ -143,7 +143,9 @@ def main():
         # 3. Valor de flujo máximo de información (Ford-Fulkerson o Edmonds-Karp)
         
         # 4. La central más cercana a la nueva contratación
-        central_cercana, distancia = encontrar_central_mas_cercana(matriz_distancias, nueva_central_idx)
+        central_cercana, _ = encontrar_central_mas_cercana(matriz_distancias, nueva_central_idx)
+        central_real = centrales[central_cercana]
+        distancia_real = distance.euclidean(central_real, nueva_central)
         
         # Crear el nombre del archivo de salida basado en el archivo de entrada
         nombre_archivo_salida = nombre_archivo_entrada.replace('Entrada', 'Salida')
@@ -153,9 +155,23 @@ def main():
 
 
             # 1.
-            archivo_salida.write("1. Forma óptima de cablear las colonias con fibra:\n")
-            archivo_salida.write(str(cableado) + "\n\n")
+            archivo_salida.write("1. Todas las conexiones posibles entre colonias con sus respectivas distancias:\n")
+            for i in range(N):
+                for j in range(N):
+                    if i != j:
+                        distancia = matriz_distancias[i][j]
+                        archivo_salida.write(f"Colonia {i+1} a colonia {j+1}: {distancia}\n")
+                archivo_salida.write("\n")
             
+
+            archivo_salida.write("1. Forma óptima de cablear las colonias con fibra:\n")
+            for arista in cableado:
+                a, b = ord(arista[0]) - 65, ord(arista[1]) - 65  # Convertir a índices
+                distancia = matriz_distancias[a][b]
+                archivo_salida.write(f"Colonia {a+1} a colonia {b+1}: {distancia}\n")
+
+            archivo_salida.write("\n")
+
             # 2. Ruta de correspondencia (cuando esté implementada)
             # archivo_salida.write("2. Ruta a seguir por el personal que reparte correspondencia:\n")
             # archivo_salida.write(str(ruta_correspondencia) + "\n\n")
@@ -165,7 +181,8 @@ def main():
             # archivo_salida.write(str(valor_flujo_maximo) + "\n\n")
             
             # 4. 
-            archivo_salida.write(f"4. La central más cercana a la nueva contratación está en {chr(65 + central_cercana)} con una distancia de {distancia:.2f} unidades.\n")
+            archivo_salida.write(f"4. La central más cercana a {nueva_central} es {central_real} con una distancia de {distancia_real:.3f} unidades.\n")
+
 
 if __name__ == "__main__":
     main()
