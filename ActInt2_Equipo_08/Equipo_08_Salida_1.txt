@@ -20,4 +20,4 @@ Colonia 1 a colonia 2: 16
 Colonia 2 a colonia 3: 18
 Colonia 3 a colonia 4: 7
 
-4. La central más cercana a (325, 200) es (200, 500) con una distancia de 325.000 unidades.
+4. La central más cercana a (325, 200) es (300, 100) con una distancia de 103.078 unidades.

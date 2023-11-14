@@ -42,4 +42,4 @@ Colonia 4 a colonia 3: 32
 Colonia 3 a colonia 5: 21
 Colonia 3 a colonia 2: 23
 
-4. La central más cercana a (392, 893) es (228, 383) con una distancia de 535.720 unidades.
+4. La central más cercana a (392, 893) es (234, 576) con una distancia de 354.193 unidades.

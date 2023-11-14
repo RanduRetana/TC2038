@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.spatial import distance
-from itertools import permutations
 import heapq
 
 # ========================== FUNCIONES AUXILIARES ==========================
@@ -41,6 +40,20 @@ def leer_datos_de_archivo(nombre_archivo):
 # @param N: Número de nodos.
 # @return: Lista de aristas que forman el árbol de expansión mínimo.
 # ======================================================================
+
+# Función para ampliar el grafo con la nueva central
+def ampliar_grafo_con_nueva_central(N, matriz_distancias, centrales, nueva_central):
+    N_ampliado = N + 1
+    for i in range(len(centrales)):
+        distancia_a_nueva_central = distance.euclidean(centrales[i], nueva_central)
+        matriz_distancias[i].append(distancia_a_nueva_central)
+    fila_nueva_central = [distance.euclidean(central, nueva_central) for central in centrales] + [0]
+    matriz_distancias.append(fila_nueva_central)
+    return N_ampliado, matriz_distancias
+
+
+
+
 def prim(matriz_distancias, N):
     # Inicialización
     seleccionados = [0] * N
@@ -89,29 +102,31 @@ def prim(matriz_distancias, N):
 # @param nueva_central_idx: Índice del nodo de la nueva central.
 # @return: Índice de la central más cercana y la distancia.
 # ======================================================================
-def encontrar_central_mas_cercana(matriz_distancias, nueva_central_idx):
+
+def dijkstra(matriz_distancias, nodo_inicio):
     N = len(matriz_distancias)
     distancias = [float('inf')] * N
-    distancias[nueva_central_idx] = 0
-    pq = [(0, nueva_central_idx)]  # Cola de prioridad para seleccionar el siguiente nodo más cercano
+    distancias[nodo_inicio] = 0
+    cola_prioridad = [(0, nodo_inicio)]
 
-    while pq:
-        distancia_actual, nodo_actual = heapq.heappop(pq)
+    while cola_prioridad:
+        distancia_actual, nodo_actual = heapq.heappop(cola_prioridad)
         if distancia_actual > distancias[nodo_actual]:
             continue
-        for vecino in range(N):
-            if matriz_distancias[nodo_actual][vecino] > 0:  # Asegurar que haya una conexión
-                distancia = distancia_actual + matriz_distancias[nodo_actual][vecino]
+
+        for vecino, peso in enumerate(matriz_distancias[nodo_actual]):
+            if peso > 0:
+                distancia = distancia_actual + peso
                 if distancia < distancias[vecino]:
                     distancias[vecino] = distancia
-                    heapq.heappush(pq, (distancia, vecino))
+                    heapq.heappush(cola_prioridad, (distancia, vecino))
 
-    central_cercana = min((index for index in range(N) if index != nueva_central_idx), key=lambda x: distancias[x])
-    return central_cercana, distancias[central_cercana]
+    return distancias
 
-
-
-
+# Función para encontrar la central más cercana utilizando Dijkstra
+def encontrar_central_mas_cercana_con_dijkstra(matriz_distancias, nueva_central_idx):
+    distancias = dijkstra(matriz_distancias, nueva_central_idx)
+    return distancias
 
 # ========================== FUNCIÓN PRINCIPAL ==========================
 
@@ -130,11 +145,13 @@ def main():
     for nombre_archivo_entrada in archivos_entrada:
         # Leer los datos de entrada
         N, matriz_distancias, matriz_flujos, centrales, nueva_central = leer_datos_de_archivo(nombre_archivo_entrada)
-
-        # Obtener el índice de la nueva central basado en las coordenadas con cálculo euclidiano
-        distancias_a_nueva_central = [distance.euclidean(central, nueva_central) for central in centrales]
-        nueva_central_idx = np.argmin(distancias_a_nueva_central)
         
+        # Ampliar el grafo con la nueva central
+        N_ampliado, matriz_distancias_ampliada = ampliar_grafo_con_nueva_central(N, matriz_distancias, centrales, nueva_central)
+
+        # Índice de la nueva central
+        nueva_central_idx = N_ampliado - 1
+
         # 1. Forma óptima de cablear las colonias con fibra (lista de arcos de la forma (A,B)).
         cableado = prim(matriz_distancias, N)
         
@@ -143,9 +160,9 @@ def main():
         # 3. Valor de flujo máximo de información (Ford-Fulkerson o Edmonds-Karp)
         
         # 4. La central más cercana a la nueva contratación
-        central_cercana, _ = encontrar_central_mas_cercana(matriz_distancias, nueva_central_idx)
-        central_real = centrales[central_cercana]
-        distancia_real = distance.euclidean(central_real, nueva_central)
+        distancias = encontrar_central_mas_cercana_con_dijkstra(matriz_distancias_ampliada, nueva_central_idx)
+        central_cercana_idx = np.argmin(distancias[:-1])
+        distancia_real = distancias[central_cercana_idx]
         
         # Crear el nombre del archivo de salida basado en el archivo de entrada
         nombre_archivo_salida = nombre_archivo_entrada.replace('Entrada', 'Salida')
@@ -181,8 +198,9 @@ def main():
             # archivo_salida.write(str(valor_flujo_maximo) + "\n\n")
             
             # 4. 
-            archivo_salida.write(f"4. La central más cercana a {nueva_central} es {central_real} con una distancia de {distancia_real:.3f} unidades.\n")
-
+            central_cercana_coordenadas = centrales[central_cercana_idx]
+            nueva_central_coordenadas = nueva_central
+            archivo_salida.write(f"4. La central más cercana a {nueva_central_coordenadas} es {central_cercana_coordenadas} con una distancia de {distancia_real:.3f} unidades.\n")
 
 if __name__ == "__main__":
     main()

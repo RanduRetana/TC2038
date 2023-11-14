@@ -42,4 +42,4 @@ Colonia 1 a colonia 3: 3
 Colonia 2 a colonia 6: 4
 Colonia 6 a colonia 4: 3
 
-4. La central más cercana a (700, 400) es (100, 400) con una distancia de 600.000 unidades.
+4. La central más cercana a (700, 400) es (690, 420) con una distancia de 22.361 unidades.
