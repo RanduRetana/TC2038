@@ -31,55 +31,32 @@ def leer_datos_de_archivo(nombre_archivo):
 
         return N, matriz_distancias, matriz_flujos, centrales, nueva_central
 
-# ======================================================================
-# Paso 1.2: El programa debe desplegar cuál es la forma óptima de cablear con fibra óptica conectando 
-# colonias de tal forma que se pueda compartir información entre cualesquiera dos colonias.
 
-# Función para calcular el MST (árbol de mínima extensión) usando el algoritmo de Prim
+# ======================================================================
+# Función para aplicar el algoritmo de Floyd-Warshall
+# Calcula las distancias mínimas entre todos los pares de nodos en un grafo.
 # @param matriz_distancias: La matriz de distancias entre nodos.
-# @param N: Número de nodos.
-# @return: Lista de aristas que forman el árbol de expansión mínimo.
+# @return: Matriz con las distancias mínimas entre todos los pares de nodos.
 # ======================================================================
-
-# Función para ampliar el grafo con la nueva central
-def ampliar_grafo_con_nueva_central(N, matriz_distancias, centrales, nueva_central):
-    N_ampliado = N + 1
-    for i in range(len(centrales)):
-        distancia_a_nueva_central = distance.euclidean(centrales[i], nueva_central)
-        matriz_distancias[i].append(distancia_a_nueva_central)
-    fila_nueva_central = [distance.euclidean(central, nueva_central) for central in centrales] + [0]
-    matriz_distancias.append(fila_nueva_central)
-    return N_ampliado, matriz_distancias
-
-
-
-
-def prim(matriz_distancias, N):
-    # Inicialización
-    seleccionados = [0] * N
-    no_of_edges = 0
-    seleccionados[0] = True
-    cableado = []
-
-    # Número de aristas en MST  (árbol de mínima extensión) será N - 1
-    while (no_of_edges < N - 1):
-        minimo = float('inf')
-        a = 0
-        b = 0
-        for m in range(N):
-            if seleccionados[m]:
-                for n in range(N):
-                    if ((not seleccionados[n]) and matriz_distancias[m][n]):  
-                        # no seleccionado y hay una arista
-                        if minimo > matriz_distancias[m][n]:
-                            minimo = matriz_distancias[m][n]
-                            a = m
-                            b = n
-        cableado.append((chr(65 + a), chr(65 + b)))
-        seleccionados[b] = True
-        no_of_edges += 1
+def floyd_warshall(matriz_distancias):
+    N = len(matriz_distancias)
+    distancias_minimas = [[float('inf') for _ in range(N)] for _ in range(N)]
     
-    return cableado
+    for i in range(N):
+        for j in range(N):
+            if i == j:
+                distancias_minimas[i][j] = 0
+            elif matriz_distancias[i][j] != 0:
+                distancias_minimas[i][j] = matriz_distancias[i][j]
+
+    for k in range(N):
+        for i in range(N):
+            for j in range(N):
+                if distancias_minimas[i][k] + distancias_minimas[k][j] < distancias_minimas[i][j]:
+                    distancias_minimas[i][j] = distancias_minimas[i][k] + distancias_minimas[k][j]
+
+    return distancias_minimas
+
 
 # ======================================================================
 # Paso 2
@@ -102,7 +79,6 @@ def prim(matriz_distancias, N):
 # @param nueva_central_idx: Índice del nodo de la nueva central.
 # @return: Índice de la central más cercana y la distancia.
 # ======================================================================
-
 def dijkstra(matriz_distancias, nodo_inicio):
     N = len(matriz_distancias)
     distancias = [float('inf')] * N
@@ -122,11 +98,34 @@ def dijkstra(matriz_distancias, nodo_inicio):
                     heapq.heappush(cola_prioridad, (distancia, vecino))
 
     return distancias
-
+# ======================================================================
 # Función para encontrar la central más cercana utilizando Dijkstra
+# @param matriz_distancias: La matriz de distancias entre nodos.
+# @param nueva_central_idx: Índice del nodo de la nueva central.
+# @return: Lista de distancias desde la nueva central a todas las centrales existentes.def encontrar_central_mas_cercana_con_dijkstra(matriz_distancias, nueva_central_idx):
+# ======================================================================
 def encontrar_central_mas_cercana_con_dijkstra(matriz_distancias, nueva_central_idx):
     distancias = dijkstra(matriz_distancias, nueva_central_idx)
     return distancias
+
+# ======================================================================
+# Función para ampliar el grafo con la nueva central (Paso 4)
+# @param N: Número actual de nodos en el grafo.
+# @param matriz_distancias: Matriz de distancias actual.
+# @param centrales: Lista de coordenadas de las centrales existentes.
+# @param nueva_central: Coordenadas de la nueva central.
+# @return: Tupla con el nuevo número de nodos y la matriz de distancias ampliada.
+# ======================================================================
+
+def ampliar_grafo_con_nueva_central(N, matriz_distancias, centrales, nueva_central):
+    N_ampliado = N + 1
+    for i in range(len(centrales)):
+        distancia_a_nueva_central = distance.euclidean(centrales[i], nueva_central)
+        matriz_distancias[i].append(distancia_a_nueva_central)
+    fila_nueva_central = [distance.euclidean(central, nueva_central) for central in centrales] + [0]
+    matriz_distancias.append(fila_nueva_central)
+    return N_ampliado, matriz_distancias
+
 
 # ========================== FUNCIÓN PRINCIPAL ==========================
 
@@ -153,8 +152,8 @@ def main():
         nueva_central_idx = N_ampliado - 1
 
         # 1. Forma óptima de cablear las colonias con fibra (lista de arcos de la forma (A,B)).
-        cableado = prim(matriz_distancias, N)
-        
+        distancias_minimas = floyd_warshall(matriz_distancias)
+
         # 2. Ruta a seguir por el personal que reparte correspondencia (TSP)
         
         # 3. Valor de flujo máximo de información (Ford-Fulkerson o Edmonds-Karp)
@@ -172,22 +171,13 @@ def main():
 
 
             # 1.
-            archivo_salida.write("1. Todas las conexiones posibles entre colonias con sus respectivas distancias:\n")
+            archivo_salida.write("1. Todas las conexiones posibles entre colonias con sus respectivas distancias mínimas:\n")
             for i in range(N):
                 for j in range(N):
                     if i != j:
-                        distancia = matriz_distancias[i][j]
+                        distancia = distancias_minimas[i][j]
                         archivo_salida.write(f"Colonia {i+1} a colonia {j+1}: {distancia}\n")
                 archivo_salida.write("\n")
-            
-
-            archivo_salida.write("1. Forma óptima de cablear las colonias con fibra:\n")
-            for arista in cableado:
-                a, b = ord(arista[0]) - 65, ord(arista[1]) - 65  # Convertir a índices
-                distancia = matriz_distancias[a][b]
-                archivo_salida.write(f"Colonia {a+1} a colonia {b+1}: {distancia}\n")
-
-            archivo_salida.write("\n")
 
             # 2. Ruta de correspondencia (cuando esté implementada)
             # archivo_salida.write("2. Ruta a seguir por el personal que reparte correspondencia:\n")
