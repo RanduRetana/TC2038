@@ -16,4 +16,6 @@ Colonia 4 a colonia 2: 21
 Colonia 4 a colonia 3: 7
 
 3. Valor de flujo máximo de información:
+78
+
 4. La central más cercana a (325, 200) es (300, 100) con una distancia de 103.078 unidades.

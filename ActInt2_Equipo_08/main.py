@@ -71,31 +71,37 @@ def floyd_warshall(matriz_distancias):
 # @param matriz_distancias:
 # @return: 
 # ======================================================================
+# Función ford_fulkerson actualizada
 def ford_fulkerson(matriz_flujos, nodo_inicial, nodo_final):
     N = len(matriz_flujos)
     matriz_flujos_residuales = [list(row) for row in matriz_flujos]
     flujo_maximo = 0
-    padres = bfs(matriz_flujos_residuales, nodo_inicial, nodo_final)
 
-    while padres is not None:
-        flujo_camino = min(matriz_flujos_residuales[padres[i]][i] for i in range(nodo_inicial, nodo_final + 1))
+    while True:
+        padres = bfs(matriz_flujos_residuales, nodo_inicial, nodo_final)
+        if padres is None:  # No hay más caminos de aumento
+            break
+
+        # Encontrar el flujo mínimo en el camino encontrado
+        flujo_camino = float('inf')
+        v = nodo_final
+        while v != nodo_inicial:
+            u = padres[v]
+            flujo_camino = min(flujo_camino, matriz_flujos_residuales[u][v])
+            v = u
+
+        # Actualizar el flujo máximo y el grafo residual
         flujo_maximo += flujo_camino
         v = nodo_final
         while v != nodo_inicial:
             u = padres[v]
             matriz_flujos_residuales[u][v] -= flujo_camino
             matriz_flujos_residuales[v][u] += flujo_camino
-            v = padres[v]
-        padres = bfs(matriz_flujos_residuales, nodo_inicial, nodo_final)
+            v = u
 
     return flujo_maximo
 
-# ======================================================================
-# Paso 3
-#
-# @param matriz_distancias:
-# @return: 
-# ======================================================================
+# Función bfs actualizada
 def bfs(matriz_flujos_residuales, nodo_inicial, nodo_final):
     N = len(matriz_flujos_residuales)
     visitados = [False] * N
@@ -105,14 +111,16 @@ def bfs(matriz_flujos_residuales, nodo_inicial, nodo_final):
 
     while cola:
         u = cola.pop(0)
-        for ind, val in enumerate(matriz_flujos_residuales[u]):
-            if not visitados[ind] and val > 0:
-                cola.append(ind)
-                visitados[ind] = True
-                padres[ind] = u
-                if ind == nodo_final:
+        for v, capacidad in enumerate(matriz_flujos_residuales[u]):
+            if capacidad > 0 and not visitados[v]:
+                cola.append(v)
+                padres[v] = u
+                visitados[v] = True
+                if v == nodo_final:
                     return padres
     return None
+
+
 
 # ======================================================================
 # Paso 4
@@ -200,6 +208,7 @@ def main():
         
         # 3. Valor de flujo máximo de información (Ford-Fulkerson o Edmonds-Karp)
         flujo_maximo = ford_fulkerson(matriz_flujos, 0, N-1)
+        print(flujo_maximo)
         
         # 4. La central más cercana a la nueva contratación
         distancias = encontrar_central_mas_cercana_con_dijkstra(matriz_distancias_ampliada, nueva_central_idx)
@@ -228,7 +237,7 @@ def main():
             
             # 3. Valor del flujo máximo (cuando esté implementado)
             archivo_salida.write("3. Valor de flujo máximo de información:\n")
-            #archivo_salida.write(str(flujo_maximo) + "\n\n")
+            archivo_salida.write(str(flujo_maximo) + "\n\n")
             
             # 4. 
             central_cercana_coordenadas = centrales[central_cercana_idx]

@@ -35,4 +35,7 @@ Colonia 6 a colonia 3: 55
 Colonia 6 a colonia 4: 23
 Colonia 6 a colonia 5: 45
 
+3. Valor de flujo máximo de información:
+5
+
 4. La central más cercana a (392, 893) es (234, 576) con una distancia de 354.193 unidades.
