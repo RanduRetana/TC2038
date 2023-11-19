@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.spatial import distance
 import heapq
+maxsize = 9223372036854775807
 
 # ========================== FUNCIONES AUXILIARES ==========================
 
@@ -61,15 +62,54 @@ def floyd_warshall(matriz_distancias):
 # ======================================================================
 # Paso 2
 #
-# @param matriz_distancias:
-# @return: 
+# Función Traveling Salesman Problem (TSP)
+#
+# Consiste en encontrar el camino más corto que recorre n ciudades
+# o puntos de interés y vuelve al punto de partida, pasando por cada ciudad
+# exactamente una vez.
+#
+# @param matriz_distancias, la matriz de distancias entre nodos.
+# @param nodo_inicial, indica el nodo inicial para el recorrido.
+# @param numNodos, número de nodos del grafo.
+# @return lista_recorrido_minimo (int), regresa lista del recorrido óptimo.
+# @return peso_minimo(int), regresa el costo mas bajo.
+# Complejidad: O(n!), donde "n" es la cantidad de vértives en el grafo.
 # ======================================================================
+def Tsp(matriz_distancias, nodo_inicial, num_nodos):
+    def generar_permutaciones(nodos):
+        if not nodos:
+            return [[]]
+        return [[nodo] + p for i, nodo in enumerate(nodos) for p in generar_permutaciones(nodos[:i] + nodos[i+1:])]
 
-# ======================================================================
+    vertices = list(range(num_nodos))
+    vertices.remove(nodo_inicial)
+
+    peso_minimo = maxsize
+    lista_ordenada = None
+
+    for perm in generar_permutaciones(vertices):
+        peso_actual = 0
+        k = nodo_inicial
+        orden_recorrido = [k] + perm
+        for j in perm:
+            peso_actual += matriz_distancias[k][j]
+            k = j
+        peso_actual += matriz_distancias[k][nodo_inicial]
+        orden_recorrido.append(nodo_inicial)
+
+        if peso_actual < peso_minimo:
+            peso_minimo = peso_actual
+            lista_ordenada = orden_recorrido
+
+    return lista_ordenada, peso_minimo
+
 # Paso 3
 #
-# @param matriz_distancias:
-# @return: 
+# @param matriz_flujos: La matriz de flujos entre nodos.
+# @param nodo_inicial: El nodo inicial del camino de aumento.
+# @param nodo_final: El nodo final del camino de aumento.
+# @return: El flujo máximo de información que se puede enviar desde el nodo inicial al nodo final.
+# complejidad: O(V * E^2)
 # ======================================================================
 # Función ford_fulkerson actualizada
 def ford_fulkerson(matriz_flujos, nodo_inicial, nodo_final):
@@ -102,6 +142,13 @@ def ford_fulkerson(matriz_flujos, nodo_inicial, nodo_final):
     return flujo_maximo
 
 # Función bfs actualizada
+# ======================================================================
+# @param matriz_flujos_residuales: La matriz de flujos residuales entre nodos.
+# @param nodo_inicial: El nodo inicial del camino de aumento.
+# @param nodo_final: El nodo final del camino de aumento.
+# @return: Lista de padres de cada nodo en el camino de aumento.
+# complejidad: O(V * E)
+# ======================================================================
 def bfs(matriz_flujos_residuales, nodo_inicial, nodo_final):
     N = len(matriz_flujos_residuales)
     visitados = [False] * N
@@ -205,11 +252,13 @@ def main():
         distancias_minimas = floyd_warshall(matriz_distancias)
 
         # 2. Ruta a seguir por el personal que reparte correspondencia (TSP)
+        # Nodo inicial para recorrido
+        nodo_inicial = 0
+        resultado, peso = Tsp(matriz_distancias, nodo_inicial, N)
         
         # 3. Valor de flujo máximo de información (Ford-Fulkerson o Edmonds-Karp)
         flujo_maximo = ford_fulkerson(matriz_flujos, 0, N-1)
-        print(flujo_maximo)
-        
+
         # 4. La central más cercana a la nueva contratación
         distancias = encontrar_central_mas_cercana_con_dijkstra(matriz_distancias_ampliada, nuevo_punto_idx)
         central_cercana_idx = np.argmin(distancias[:-1])
@@ -232,8 +281,10 @@ def main():
                 archivo_salida.write("\n")
 
             # 2. Ruta de correspondencia (cuando esté implementada)
-            # archivo_salida.write("2. Ruta a seguir por el personal que reparte correspondencia:\n")
-            # archivo_salida.write(str(ruta_correspondencia) + "\n\n")
+            archivo_salida.write("2. Ruta a seguir por el personal que reparte correspondencia:\n")
+            archivo_salida.write(f"Ruta óptima: {resultado}. Peso del recorrido mas corto: {peso}\n\n")
+
+            archivo_salida.write(str() + "\n\n")
             
             # 3. Valor del flujo máximo (cuando esté implementado)
             archivo_salida.write("3. Valor de flujo máximo de información:\n")

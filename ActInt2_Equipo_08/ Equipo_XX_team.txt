@@ -23,11 +23,20 @@ las partes específicas del proyecto en las que trabajó cada uno de los integra
 
 -------------------------------------------------
 | Marco Randu Retana Vargas | A01709521 :
+| Parte 2: En esta parte se implementa una función llamada ford_fulkerson la cual
+| nos ayuda a encontrar el flujo máximo de la red. Esta función se implementa usando
+| el algoritmo de Ford-Fulkerson. El nombre de la función es "ford_fulkerson".
+| Este algoritmo utiliza también el bfs para encontrar el camino más corto entre
+| el nodo fuente y el nodo sumidero. El nombre de la función es "bfs".
 |
 -------------------------------------------------
 
 
 -------------------------------------------------
 | Sebastian Flores Lemus    | A01709229 :
-|
+| Parte 3: En esta parte se implementa una función llamada "Tsp" usando el algoritmo
+| Traveling Salesman Problem el cual consiste en encontrar el camino más corto que
+| recorre n ciudades o puntos de interés y vuelve al punto de partida, pasando por
+| cada ciudad exactamente una vez. Este algoritmo no solo nos ayuda a encontrar la
+| lista del camino mas corto, si no que tambien nos da el peso total de la ruta mas corta.
 -------------------------------------------------
