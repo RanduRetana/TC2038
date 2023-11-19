@@ -1,4 +1,4 @@
-1. Todas las conexiones posibles entre colonias con sus respectivas distancias mÌnimas:
+1. Todas las conexiones posibles entre colonias con sus respectivas distancias m√≠nimas:
 Colonia 1 a colonia 2: 34
 Colonia 1 a colonia 3: 53
 Colonia 1 a colonia 4: 21
@@ -35,7 +35,7 @@ Colonia 6 a colonia 3: 55
 Colonia 6 a colonia 4: 23
 Colonia 6 a colonia 5: 45
 
-3. Valor de flujo m·ximo de informaciÛn:
+3. Valor de flujo m√°ximo de informaci√≥n:
 5
 
-4. La central m·s cercana a (392, 893) es (234, 576) con una distancia de 354.193 unidades.
+4. La central m√°s cercana a (392, 893) es (234, 576) con una distancia de 354.193 unidades.

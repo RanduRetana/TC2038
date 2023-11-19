@@ -14,7 +14,6 @@ import heapq
 # ======================================================================
 def leer_datos_de_archivo(nombre_archivo):
     with open(nombre_archivo, 'r') as archivo:
-        # Leer el número de nodos
         N = int(archivo.readline().strip())
 
         # Leer la matriz de distancias
@@ -27,9 +26,9 @@ def leer_datos_de_archivo(nombre_archivo):
         centrales = [tuple(map(int, archivo.readline().strip("()\n").split(","))) for _ in range(N)]
 
         # Leer las coordenadas de la nueva central
-        nueva_central = tuple(map(int, archivo.readline().strip("()\n").split(",")))
+        nuevo_punto = tuple(map(int, archivo.readline().strip("()\n").split(",")))
 
-        return N, matriz_distancias, matriz_flujos, centrales, nueva_central
+        return N, matriz_distancias, matriz_flujos, centrales, nuevo_punto
 
 
 # ======================================================================
@@ -37,6 +36,7 @@ def leer_datos_de_archivo(nombre_archivo):
 # Calcula las distancias mínimas entre todos los pares de nodos en un grafo.
 # @param matriz_distancias: La matriz de distancias entre nodos.
 # @return: Matriz con las distancias mínimas entre todos los pares de nodos.
+# complejidad: o(n^3)
 # ======================================================================
 def floyd_warshall(matriz_distancias):
     N = len(matriz_distancias)
@@ -120,14 +120,13 @@ def bfs(matriz_flujos_residuales, nodo_inicial, nodo_final):
                     return padres
     return None
 
-
-
 # ======================================================================
 # Paso 4
 # Función para encontrar la central más cercana utilizando Dijkstra para el camino más corto.
 # @param matriz_distancias: La matriz de distancias entre nodos.
-# @param nueva_central_idx: Índice del nodo de la nueva central.
+# @param nuevo_punto_idx: Índice del nodo de la nueva central.
 # @return: Índice de la central más cercana y la distancia.
+# complejidad: O(V log V + E log V)
 # ======================================================================
 def dijkstra(matriz_distancias, nodo_inicio):
     N = len(matriz_distancias)
@@ -148,14 +147,15 @@ def dijkstra(matriz_distancias, nodo_inicio):
                     heapq.heappush(cola_prioridad, (distancia, vecino))
 
     return distancias
+
 # ======================================================================
 # Función para encontrar la central más cercana utilizando Dijkstra
 # @param matriz_distancias: La matriz de distancias entre nodos.
-# @param nueva_central_idx: Índice del nodo de la nueva central.
-# @return: Lista de distancias desde la nueva central a todas las centrales existentes.def encontrar_central_mas_cercana_con_dijkstra(matriz_distancias, nueva_central_idx):
+# @param nuevo_punto_idx: Índice del nodo de la nueva central.
+# @return: Lista de distancias desde la nueva central a todas las centrales existentes.def encontrar_central_mas_cercana_con_dijkstra(matriz_distancias, nuevo_punto_idx):
 # ======================================================================
-def encontrar_central_mas_cercana_con_dijkstra(matriz_distancias, nueva_central_idx):
-    distancias = dijkstra(matriz_distancias, nueva_central_idx)
+def encontrar_central_mas_cercana_con_dijkstra(matriz_distancias, nuevo_punto_idx):
+    distancias = dijkstra(matriz_distancias, nuevo_punto_idx)
     return distancias
 
 # ======================================================================
@@ -163,17 +163,17 @@ def encontrar_central_mas_cercana_con_dijkstra(matriz_distancias, nueva_central_
 # @param N: Número actual de nodos en el grafo.
 # @param matriz_distancias: Matriz de distancias actual.
 # @param centrales: Lista de coordenadas de las centrales existentes.
-# @param nueva_central: Coordenadas de la nueva central.
+# @param nuevo_punto: Coordenadas de la nueva central.
 # @return: Tupla con el nuevo número de nodos y la matriz de distancias ampliada.
 # ======================================================================
 
-def ampliar_grafo_con_nueva_central(N, matriz_distancias, centrales, nueva_central):
+def ampliar_grafo_con_nuevo_punto(N, matriz_distancias, centrales, nuevo_punto):
     N_ampliado = N + 1
     for i in range(len(centrales)):
-        distancia_a_nueva_central = distance.euclidean(centrales[i], nueva_central)
-        matriz_distancias[i].append(distancia_a_nueva_central)
-    fila_nueva_central = [distance.euclidean(central, nueva_central) for central in centrales] + [0]
-    matriz_distancias.append(fila_nueva_central)
+        distancia_a_nuevo_punto = distance.euclidean(centrales[i], nuevo_punto)
+        matriz_distancias[i].append(distancia_a_nuevo_punto)
+    fila_nuevo_punto = [distance.euclidean(central, nuevo_punto) for central in centrales] + [0]
+    matriz_distancias.append(fila_nuevo_punto)
     return N_ampliado, matriz_distancias
 
 
@@ -193,13 +193,13 @@ def main():
 
     for nombre_archivo_entrada in archivos_entrada:
         # Leer los datos de entrada
-        N, matriz_distancias, matriz_flujos, centrales, nueva_central = leer_datos_de_archivo(nombre_archivo_entrada)
+        N, matriz_distancias, matriz_flujos, centrales, nuevo_punto = leer_datos_de_archivo(nombre_archivo_entrada)
         
         # Ampliar el grafo con la nueva central
-        N_ampliado, matriz_distancias_ampliada = ampliar_grafo_con_nueva_central(N, matriz_distancias, centrales, nueva_central)
+        N_ampliado, matriz_distancias_ampliada = ampliar_grafo_con_nuevo_punto(N, matriz_distancias, centrales, nuevo_punto)
 
         # Índice de la nueva central
-        nueva_central_idx = N_ampliado - 1
+        nuevo_punto_idx = N_ampliado - 1
 
         # 1. Forma óptima de cablear las colonias con fibra (lista de arcos de la forma (A,B)).
         distancias_minimas = floyd_warshall(matriz_distancias)
@@ -211,7 +211,7 @@ def main():
         print(flujo_maximo)
         
         # 4. La central más cercana a la nueva contratación
-        distancias = encontrar_central_mas_cercana_con_dijkstra(matriz_distancias_ampliada, nueva_central_idx)
+        distancias = encontrar_central_mas_cercana_con_dijkstra(matriz_distancias_ampliada, nuevo_punto_idx)
         central_cercana_idx = np.argmin(distancias[:-1])
         distancia_real = distancias[central_cercana_idx]
         
@@ -241,8 +241,8 @@ def main():
             
             # 4. 
             central_cercana_coordenadas = centrales[central_cercana_idx]
-            nueva_central_coordenadas = nueva_central
-            archivo_salida.write(f"4. La central más cercana a {nueva_central_coordenadas} es {central_cercana_coordenadas} con una distancia de {distancia_real:.3f} unidades.\n")
+            nuevo_punto_coordenadas = nuevo_punto
+            archivo_salida.write(f"4. La central más cercana a {nuevo_punto_coordenadas} es {central_cercana_coordenadas} con una distancia de {distancia_real:.3f} unidades.\n")
 
 if __name__ == "__main__":
     main()
